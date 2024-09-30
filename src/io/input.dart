@@ -6,6 +6,10 @@ enum InputEventType {
   ARROW_DOWN,
   ARROW_LEFT,
   ARROW_RIGHT,
+  CTRL_ARROW_UP,
+  CTRL_ARROW_DOWN,
+  CTRL_ARROW_LEFT,
+  CTRL_ARROW_RIGHT,
   ESC,
   KEY,
   DONE,
@@ -80,6 +84,34 @@ class InputStream {
     }
   }
 
+  _event6(List<int> data) {
+    switch (data[0]) {
+      case 27:
+        switch (data[1]) {
+          case 91:
+            switch (data[2]) {
+              case 49:
+                switch (data[3]) {
+                  case 59:
+                    switch (data[4]) {
+                      case 53:
+                        switch (data[5]) {
+                          case 65:
+                            return _typed(InputEventType.CTRL_ARROW_UP);
+                          case 66:
+                            return _typed(InputEventType.CTRL_ARROW_DOWN);
+                          case 67:
+                            return _typed(InputEventType.CTRL_ARROW_RIGHT);
+                          case 68:
+                            return _typed(InputEventType.CTRL_ARROW_LEFT);
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }
+
   void start() {
     sub = io.stdin.listen((data) {
       switch (data.length) {
@@ -89,6 +121,8 @@ class InputStream {
         case 3:
           _event3(data);
           break;
+        case 6:
+          _event6(data);
       }
     });
   }
