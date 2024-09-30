@@ -20,6 +20,14 @@ class Cube<T> {
         _sideE = Matrix.filled(size, size, def),
         _sideF = Matrix.filled(size, size, def);
 
+  Cube.generate(this.size, T Function(CubeSide, int, int) gen)
+      : _sideA = Matrix.generate(size, size, (i, j) => gen(CubeSide.A0, i, j)),
+        _sideB = Matrix.generate(size, size, (i, j) => gen(CubeSide.B0, i, j)),
+        _sideC = Matrix.generate(size, size, (i, j) => gen(CubeSide.C0, i, j)),
+        _sideD = Matrix.generate(size, size, (i, j) => gen(CubeSide.D0, i, j)),
+        _sideE = Matrix.generate(size, size, (i, j) => gen(CubeSide.E0, i, j)),
+        _sideF = Matrix.generate(size, size, (i, j) => gen(CubeSide.F0, i, j));
+
   Matrix<T> getSide(CubeSide side) {
     return _getSide0(side.label).rotate90(side.r);
   }
